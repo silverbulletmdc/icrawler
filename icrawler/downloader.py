@@ -97,7 +97,7 @@ class Downloader(ThreadPool):
     def download(self,
                  task,
                  default_ext,
-                 timeout=1,
+                 timeout=5,
                  max_retry=1,
                  overwrite=False,
                  **kwargs):
@@ -176,8 +176,8 @@ class Downloader(ThreadPool):
     def worker_exec(self,
                     max_num,
                     default_ext='',
-                    queue_timeout=1,
-                    req_timeout=1,
+                    queue_timeout=5,
+                    req_timeout=5,
                     **kwargs):
         """Target method of workers.
 
@@ -271,8 +271,8 @@ class ImageDownloader(Downloader):
     def worker_exec(self,
                     max_num,
                     default_ext='jpg',
-                    queue_timeout=1,
-                    req_timeout=1,
+                    queue_timeout=5,
+                    req_timeout=5,
                     **kwargs):
         super(ImageDownloader, self).worker_exec(
             max_num, default_ext, queue_timeout, req_timeout, **kwargs)
