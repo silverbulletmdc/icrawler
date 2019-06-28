@@ -141,6 +141,7 @@ class BaiduImageCrawler(Crawler):
               keyword,
               filters=None,
               offset=0,
+              class_index=0,
               max_num=1000,
               min_size=None,
               max_size=None,
@@ -166,6 +167,7 @@ class BaiduImageCrawler(Crawler):
             min_size=min_size,
             max_size=max_size,
             file_idx_offset=file_idx_offset,
-            overwrite=overwrite)
+            overwrite=overwrite,
+            class_index=class_index)
         super(BaiduImageCrawler, self).crawl(
             feeder_kwargs=feeder_kwargs, downloader_kwargs=downloader_kwargs)

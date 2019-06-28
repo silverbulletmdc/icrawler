@@ -36,6 +36,7 @@ class Downloader(ThreadPool):
         self.session = session
         self.storage = storage
         self.file_idx_offset = 0
+        self.class_index=0
         self.clear_status()
 
     def clear_status(self):
@@ -96,8 +97,8 @@ class Downloader(ThreadPool):
     def download(self,
                  task,
                  default_ext,
-                 timeout=5,
-                 max_retry=3,
+                 timeout=1,
+                 max_retry=1,
                  overwrite=False,
                  **kwargs):
         """Download the image and save it to the corresponding path.
@@ -165,6 +166,8 @@ class Downloader(ThreadPool):
     def start(self, file_idx_offset=0, *args, **kwargs):
         self.clear_status()
         self.set_file_idx_offset(file_idx_offset)
+        self.class_index=kwargs['class_index']
+        del kwargs['class_index']
         self.init_workers(*args, **kwargs)
         for worker in self.workers:
             worker.start()
@@ -173,8 +176,8 @@ class Downloader(ThreadPool):
     def worker_exec(self,
                     max_num,
                     default_ext='',
-                    queue_timeout=5,
-                    req_timeout=5,
+                    queue_timeout=1,
+                    req_timeout=1,
                     **kwargs):
         """Target method of workers.
 
@@ -263,13 +266,13 @@ class ImageDownloader(Downloader):
         else:
             extension = default_ext
         file_idx = self.fetched_num + self.file_idx_offset
-        return '{:06d}.{}'.format(file_idx, extension)
+        return str(self.class_index)+'_{:06d}.{}'.format(file_idx, extension)
 
     def worker_exec(self,
                     max_num,
                     default_ext='jpg',
-                    queue_timeout=5,
-                    req_timeout=5,
+                    queue_timeout=1,
+                    req_timeout=1,
                     **kwargs):
         super(ImageDownloader, self).worker_exec(
             max_num, default_ext, queue_timeout, req_timeout, **kwargs)
